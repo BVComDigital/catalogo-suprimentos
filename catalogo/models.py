@@ -19,4 +19,15 @@ class Produto(models.Model):
 
    def __str__(self):
       return self.nome
+
+   @property
+   def lucro_bruto(self):
+      return self.preco - self.custo
+
+   @property
+   def margem_bruta(self):
+      if self.preco == 0:
+         return 0
+      
+      return (self.lucro_bruto / self.preco) * 100
    
