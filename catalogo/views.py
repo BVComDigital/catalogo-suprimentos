@@ -17,6 +17,6 @@ def cadastrar_produto(request): # request: representa a requisição enviada pel
    else:
       form = ProdutoForm() # cria um formulário vazio para exibição inicial.
 
-   return render(request, 'catalogo/cadastrar_produto.html', {'form': form})
+   return render(request, 'catalogo/cadastrar_produtos.html', {'form': form})
 
 

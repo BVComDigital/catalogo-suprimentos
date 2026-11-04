@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+{% block title %}Cadastro de Produtos {% endblock title %}
+
+{% block content %}
+<h1>Cadastrar produtos</h1>
+
+<form method="POST" enctype="multipart/form-data">
+{% comment %} enctype="multipart/form-data": permite enviar arquivos, como imagens {% endcomment %}
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Salvar produto</button>
+</form>
+
+{% endblock content %}
+    
