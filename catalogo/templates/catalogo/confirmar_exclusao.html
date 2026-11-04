@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block title %}Editar produto {% endblock title %}
+
+{% block content %}
+<h1>Confirmar exclusão</h1>
+
+<p>
+    Tem certeza de que deseja excluir o produto
+    <strong>{{ produto.nome }}</strong>?
+</p>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <button type="submit">Sim, excluir</button>
+    <a href="{% url 'lista_produtos' %}">Cancelar</a>
+</form>
+
+{% endblock content %}
+    

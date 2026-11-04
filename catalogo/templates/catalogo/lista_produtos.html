@@ -17,43 +17,42 @@
         
         {% for produto in grupo.list %}
 
-
         <div class="produto-card">
-        <h3>{{ produto.nome }}</h3>
+            <h3>{{ produto.nome }}</h3>
 
-        <p>Categoria: {{ produto.categoria | capfirst }}</p>
+            <p>Categoria: {{ produto.categoria | capfirst }}</p>
 
-        <p class="produto-preco">
-            Preço: R$ {{ produto.preco | floatformat:2 |localize }}
-        </p>
-        {% comment %} localize Aplicar formatação regional {% endcomment %}
+            <p class="produto-preco">
+                Preço: R$ {{ produto.preco | floatformat:2 |localize }}
+            </p>
+            {% comment %} localize Aplicar formatação regional {% endcomment %}
 
-        {% if produto.estoque == 0 %}
-            <p>Produto sem estoque.</p>
+            {% if produto.estoque == 0 %}
+                <p>Produto sem estoque.</p>
+            {% elif produto.estoque <= 5 %}
+                <p>Estoque: {{ produto.estoque }}</p>
+                <p><b>Estoque baixo</b></p>
+            {% else %}
+                <p>Estoque: {{ produto.estoque }}</p>
+            {% endif %}
 
-        {% elif produto.estoque <= 5 %}
-            <p>Estoque: {{ produto.estoque }}</p>
-            <p><b>Estoque baixo</b></p>
+            <p>Lucro bruto: R$ {{ produto.lucro_bruto | floatformat:2 |localize }} </p>
 
-        {% else %}
-            <p>Estoque: {{ produto.estoque }}</p>
+            <p>Margem bruta: {{ produto.margem_bruta | floatformat:2 |localize }} %</p>
 
-        {% endif %}
+            <hr>
+            
+            {% if produto.descricao %}
+                <p>Descrição: {{ produto.descricao }}</p>
+            {% endif %}
 
-        <p>Lucro bruto: R$ {{ produto.lucro_bruto | floatformat:2 |localize }} </p>
+            {% if produto.imagem %}
+                <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
+            {% endif %}
 
-        <p>Margem bruta: {{ produto.margem_bruta | floatformat:2 |localize }} %</p>
+            <a href="{% url 'editar_produto' produto.pk %}">Editar Produto</a>
 
-        <hr>
-        
-        {% if produto.descricao %}
-        <p>Descrição: {{ produto.descricao }}</p>
-
-        {% endif %}
-
-        {% if produto.imagem %}
-            <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
-        {% endif %}
+            <a href="{% url 'excluir_produto' produto.pk %}">Excluir produto</a>
 
         </div>
     
