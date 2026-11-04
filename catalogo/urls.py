@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     path('produtos/', views.lista_produtos, name='lista_produtos'),
+    path('produtos/novo/', views.cadastrar_produto, name='cadastrar_produto'),
 ]
 
 if settings.DEBUG:
