@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load l10n %}
+
+{% block title %}Nossos Produtos{% endblock %}
+
+
+{% block content %}
+
+    <h1>Catálogo de Produtos</h1>
+
+    {% regroup produtos by categoria as grupos_categoria %}
+
+    {% for grupo in grupos_categoria %}
+        <h2>{{ grupo.grouper | upper }}</h2>
+
+    <div class="produtos-grid">
+        
+        {% for produto in grupo.list %}
+
+
+        <div class="produto-card">
+        <h3>{{ produto.nome }}</h3>
+
+        <p>Categoria: {{ produto.categoria | capfirst }}</p>
+
+        <p class="produto-preco">
+            Preço: R$ {{ produto.preco | floatformat:2 |localize }}
+        </p>
+        {% comment %} localize Aplicar formatação regional {% endcomment %}
+
+        {% if produto.estoque == 0 %}
+            <p>Produto sem estoque.</p>
+
+        {% elif produto.estoque <= 5 %}
+            <p>Estoque: {{ produto.estoque }}</p>
+            <p><b>Estoque baixo</b></p>
+
+        {% else %}
+            <p>Estoque: {{ produto.estoque }}</p>
+
+        {% endif %}
+
+        <p>Lucro bruto: R$ {{ produto.lucro_bruto | floatformat:2 |localize }} </p>
+
+        <p>Margem bruta: {{ produto.margem_bruta | floatformat:2 |localize }} %</p>
+
+        <hr>
+        
+        {% if produto.descricao %}
+        <p>Descrição: {{ produto.descricao }}</p>
+
+        {% endif %}
+
+        {% if produto.imagem %}
+            <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
+        {% endif %}
+
+        </div>
+    
+        {% endfor %}
+    
+    </div>
+    
+    {% empty %} {% comment %}  Exibir mensagem quando não há produtos {% endcomment %}
+        <p>Nenhum produto encontrado </p>
+    
+    {% endfor %}
+
+
+{% endblock %}

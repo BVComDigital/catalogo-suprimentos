@@ -35,7 +35,7 @@ class ProdutoAdmin(admin.ModelAdmin):
             output_field=DecimalField(max_digits=10, decimal_places=2)            
          ),
          margem_calculada=ExpressionWrapper(
-            ((F('preco') - F('custo')) / NullIf(('preco'), 0)) * 100, 
+            ((F('preco') - F('custo')) / NullIf(F('preco'), 0)) * 100, 
             output_field=DecimalField(max_digits=10, decimal_places=2)
          )
          )

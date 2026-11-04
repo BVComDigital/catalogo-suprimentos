@@ -1,0 +1,101 @@
+/* Configurações gerais */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #b5121b;
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+header h1 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+/* Conteúdo principal */
+main {
+    max-width: 1100px;
+    margin: 35px auto;
+    padding: 0 20px;
+}
+
+/* Categorias */
+h2 {
+    color: #b5121b;
+    margin: 30px 0 15px;
+    border-bottom: 2px solid #b5121b;
+    padding-bottom: 8px;
+}
+
+/* Produtos */
+h3 {
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* Rodapé */
+footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+/* Cartão de produto */
+.produto-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.produto-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+.produto-card p {
+    margin: 5px 0;
+}
+
+.produtos-grid {
+    display: grid;
+    /*   cria duas colunas de mesma proporção */
+    /* grid-template-columns: repeat(2, 1fr); */
+    /* auto-fit: ajusta automaticamente a quantidade de colunas. */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    /*  mantém o espaçamento entre os cartões */
+    gap: 20px;
+}
+
+.produto-preco {
+    color: #b5121b;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 12px 0;
+}
+
+.produto-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
