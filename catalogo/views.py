@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect, get_object_or_404
+from django.contrib import messages
 from .models import Produto, Categoria
 from .forms import ProdutoForm
 
@@ -13,6 +14,7 @@ def cadastrar_produto(request): # request: representa a requisição enviada pel
       # request.POST: contém os dados dos campos. request.FILES: contém arquivos enviados, como imagens.
       if form.is_valid():
          form.save()
+         messages.success(request, "Produto cadastrado com sucesso!")
          return redirect('lista_produtos')
    else:
       form = ProdutoForm() # cria um formulário vazio para exibição inicial.
@@ -28,6 +30,7 @@ def editar_produto(request, pk):
       
       if form.is_valid():
          form.save()
+         messages.success(request, "Produto atualizado com sucesso!")
          return redirect('lista_produtos')
    else:
       form = ProdutoForm(instance=produto) 
@@ -40,6 +43,7 @@ def excluir_produto(request, pk):
 
    if request.method == 'POST':
       produto.delete()
+      messages.success(request, "Produto excluído com sucesso!")
       return redirect('lista_produtos')
 
    return render(request, 'catalogo/confirmar_exclusao.html', { 'produto': produto})
