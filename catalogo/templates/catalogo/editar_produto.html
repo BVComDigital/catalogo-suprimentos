@@ -6,6 +6,15 @@
 {% block content %}
 <h1>Editar produto: {{ produto.nome }} </h1>
 
+<section class='auditoria'>
+    <h2>Histórico do produto</h2>
+
+    <p>Cadastrado por: {{ produto.cadastrado_por|default:"Não informado" }}</p>
+
+    <p>Última alteração: {{ produto.alterado_por|default:"Nenhuma alteração registrada" }}</p>
+
+</section>
+
 <form method="POST" enctype="multipart/form-data">
 
     {% csrf_token %}

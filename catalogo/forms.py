@@ -8,7 +8,15 @@ class TesteProdutoForm(forms.Form):
 class ProdutoForm(forms.ModelForm):
    class Meta:
       model = Produto
-      fields = '__all__'
+      fields = [
+         'nome',
+         'descricao',
+         'preco',
+         'custo',
+         'estoque',
+         'categoria',
+         'imagem',
+      ]
 
       widgets = {
          "descrição": forms.Textarea(

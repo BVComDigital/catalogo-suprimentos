@@ -8,6 +8,10 @@
 
     <h1>Catálogo de Produtos</h1>
 
+    {% if perms.catalogo.add_produto %} 
+        <a href="{% url 'cadastrar_produto'  %}">Novo produto</a>
+    {% endif %}
+    
     {% regroup produtos by categoria as grupos_categoria %}
 
     {% for grupo in grupos_categoria %}
@@ -50,9 +54,13 @@
                 <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
             {% endif %}
 
-            <a href="{% url 'editar_produto' produto.pk %}">Editar Produto</a>
+            {% if perms.catalogo.change_produto %}
+                <a href="{% url 'editar_produto' produto.pk %}">Editar Produto</a>
+            {% endif %}
 
-            <a href="{% url 'excluir_produto' produto.pk %}">Excluir produto</a>
+            {% if perms.catalogo.delete_produto %}
+                <a href="{% url 'excluir_produto' produto.pk %}">Excluir produto</a>
+            {% endif %}
 
         </div>
     

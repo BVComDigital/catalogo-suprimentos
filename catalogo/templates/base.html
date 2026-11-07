@@ -11,21 +11,37 @@
 <body>
 
     <header>
+
         <h1>Catálogo de Suplementos</h1>
         <p>Qualidade e saúde em cada escolha.</p>
+
+        {% if user.is_authenticated %}
+        
+            <p>Olá, {{ user.username }}!</p>
+
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">Sair</button>
+            </form>
+
+        {% endif %}
+
     </header>
 
     <main>
+        <div class="mensagens-container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mensagem {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
         {% block content %}
 
-        {% if messages %}
-            {% for message in messages %}
-                <div class="messagem {{ message.tags }}">
-                    {{ message }}
-                </div>            
-            {% endfor %}        
-        {% endif %}
-        
+
 
         {% endblock %}
     </main>
@@ -33,6 +49,6 @@
     <footer>
         <p>Catálogo de Produtos</p>
     </footer>
-
+    <script src="{% static 'catalogo/js/mensagens.js' %}"></script>
 </body>
 </html>

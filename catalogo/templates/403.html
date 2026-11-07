@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Acesso proibido{% endblock %}
+
+{% block content %}
+    <h1>Acesso não autorizado</h1>
+
+    <p>Você não possui permissão para realizar esta operação.</p>
+
+    <a href="{% url 'lista_produtos' %}">
+        Voltar ao catálogo
+    </a>
+{% endblock %}

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-@=jj@l0h4*1c%7_vp&xor8uk6hpgo_cgl3fo8_9!2y(7&5u==n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "testserver"]
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'catalogo',
+    'usuarios',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +130,7 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+LOGIN_REDIRECT_URL = "lista_produtos"
+LOGOUT_REDIRECT_URL = "home"
+LOGIN_URL = "login"
