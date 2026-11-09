@@ -137,3 +137,229 @@ footer {
     color: #991b1b;
     border-left: 5px solid #ef4444;
 }
+
+
+/* Formulário de filtros */
+.form-filtros {
+    background-color: #f8f8f8;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+/* Campo de busca */
+.campo-busca {
+    margin-bottom: 18px;
+}
+
+.campo-busca input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Organização dos filtros */
+.grupo-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* Cada campo */
+.campo-filtro {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 150px;
+}
+
+.campo-filtro label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.campo-filtro input,
+.campo-filtro select,
+.campo-busca input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* Botões */
+.acoes-filtros {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.acoes-filtros button,
+.acoes-filtros a {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+}
+
+/* Botão Buscar */
+.acoes-filtros button {
+    background-color: #b5121b;
+    color: white;
+}
+
+/* Link Limpar busca */
+.acoes-filtros a {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+/* Destaque ao selecionar um campo */
+.campo-filtro input:focus,
+.campo-filtro select:focus,
+.campo-busca input:focus {
+    outline: none;
+    border-color: #b5121b;
+    box-shadow: 0 0 0 2px rgba(181, 18, 27, 0.12);
+}
+
+/* Efeito ao passar o mouse */
+.acoes-filtros button:hover {
+    background-color: #8f0e16;
+}
+
+.acoes-filtros a:hover {
+    background-color: #c9c9c9;
+}
+
+/* Botões produtos */
+.acoes-produtos {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.acoes-produtos a {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+}
+
+
+.acoes-produtos a {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.acoes-produtos .excluir {
+    background-color: #b5121b;
+    color: white;
+}
+
+/* Efeito ao passar o mouse */
+.acoes-produtos a:hover {
+    background-color: #770b10;
+}
+
+
+/* Navegação entre páginas */
+.paginacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 30px 0;
+}
+
+/* Links e números */
+.paginacao a {
+    padding: 8px 13px;
+    border: 1px solid #ccc;
+    border-radius:  50px 50px 50px 50px;
+    color: #333;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+/* Efeito ao passar o mouse */
+.paginacao a:hover {
+    background-color: #eee;
+}
+
+/* Página atual */
+.paginacao a.pagina-atual {
+    background-color: #b5121b;
+    color: white;
+    border-color: #b5121b;
+    font-weight: bold;
+}
+
+/* Informação da página */
+.paginacao span {
+    font-size: 14px;
+    margin: 0 8px;
+}
+
+.detalhe-produto {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.detalhe-produto img {
+    display: block;
+    max-width: 300px;
+    width: 100%;
+    height: auto;
+    margin: 20px auto;
+    object-fit: contain;
+}
+
+.detalhe-produto h1 {
+    text-align: center;
+    color: #b5121b;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.detalhe-produto p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    color: #444;
+}
+
+.detalhe-produto h3 {
+    color: #b5121b;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.botao-voltar {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 18px;
+    background-color: #b5121b;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.botao-voltar:hover {
+    background-color: #850d14;
+}

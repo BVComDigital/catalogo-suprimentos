@@ -8,6 +8,87 @@
 
     <h1>Catálogo de Produtos</h1>
 
+    {% comment %} Formulario de busca por produto {% endcomment %}
+    <form method="GET" class="form-filtros">
+
+        
+        <div class="campo-busca">
+            <input type="text" name="busca" placeholder="Buscar produto" value="{{ request.GET.busca }}">
+        </div>
+
+        <div class="grupo-filtros">
+
+            <div class="campo-filtro">
+                <label>Categoria</label>
+                <select name="categoria">
+                    <option value="">Todas as categorias</option>
+                    {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}" {% if categoria.id|stringformat:"s" == request.GET.categoria %}selected{% endif %}>
+                            {{ categoria.nome }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="campo-filtro">
+                <label>Preço mínimo</label>
+                <input type="number" name="preco_min" step="0.01"
+                    value="{{ request.GET.preco_min }}">
+            </div>
+
+            <div class="campo-filtro">
+                <label>Preço máximo</label>
+                <input type="number" name="preco_max" step="0.01"
+                    value="{{ request.GET.preco_max }}">
+            </div>
+
+            <div class="campo-filtro">
+                <label>Estoque</label>
+                <select name="estoque">
+                    <option value="" {% if request.GET.estoque == "" %}selected{% endif %}>Todos</option>
+                    <option value="sem_estoque" {% if request.GET.estoque == "sem_estoque" %}selected{% endif %}>Sem estoque</option>
+                    <option value="baixo" {% if request.GET.estoque == "baixo" %}selected{% endif %}>Baixo</option>
+                    <option value="disponivel" {% if request.GET.estoque == "disponivel" %}selected{% endif %}>Disponível</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="campo-filtro">
+            <label>Ordenar por:</label>
+
+            <select name="ordenacao" >
+                <option value="">Padrão</option>
+                <option value="nome" {% if request.GET.ordenacao == "nome" %}selected{% endif %}>
+                    Nome: A-Z
+                </option>
+                <option value="-nome" {% if request.GET.ordenacao == "-nome" %}selected{% endif %}>
+                    Nome: Z-A
+                </option>
+                <option value="preco" {% if request.GET.ordenacao == "preco" %}selected{% endif %}>
+                    Menor preço
+                </option>
+                <option value="-preco" {% if request.GET.ordenacao == "-preco" %}selected{% endif %}>
+                    Maior preço
+                </option>
+                <option value="estoque" {% if request.GET.ordenacao == "estoque" %}selected{% endif %}>
+                    Menor estoque
+                </option>
+
+                <option value="-estoque" {% if request.GET.ordenacao == "-estoque" %}selected{% endif %}>
+                    Maior estoque
+                </option>
+            </select>
+
+        </div>
+
+        <div class="acoes-filtros">
+            <button type="submit">Buscar</button>
+            <a href="{% url 'lista_produtos' %}">Limpar busca</a>
+        </div>
+
+    </form>
+
     {% if perms.catalogo.add_produto %} 
         <a href="{% url 'cadastrar_produto'  %}">Novo produto</a>
     {% endif %}
@@ -21,49 +102,55 @@
         
         {% for produto in grupo.list %}
 
-        <div class="produto-card">
-            <h3>{{ produto.nome }}</h3>
+            <div class="produto-card">
+                <h3><a href="{% url 'detalhe_produto' produto.pk %}">
+                        {{ produto.nome }}
+                    </a>
+                </h3>
 
-            <p>Categoria: {{ produto.categoria | capfirst }}</p>
+                <p>Categoria: {{ produto.categoria | capfirst }}</p>
 
-            <p class="produto-preco">
-                Preço: R$ {{ produto.preco | floatformat:2 |localize }}
-            </p>
-            {% comment %} localize Aplicar formatação regional {% endcomment %}
+                <p class="produto-preco">
+                    Preço: R$ {{ produto.preco | floatformat:2 |localize }}
+                </p>
+                {% comment %} localize Aplicar formatação regional {% endcomment %}
 
-            {% if produto.estoque == 0 %}
-                <p>Produto sem estoque.</p>
-            {% elif produto.estoque <= 5 %}
-                <p>Estoque: {{ produto.estoque }}</p>
-                <p><b>Estoque baixo</b></p>
-            {% else %}
-                <p>Estoque: {{ produto.estoque }}</p>
-            {% endif %}
+                {% if produto.estoque == 0 %}
+                    <p>Produto sem estoque.</p>
+                {% elif produto.estoque <= 5 %}
+                    <p>Estoque: {{ produto.estoque }}</p>
+                    <p><b>Estoque baixo</b></p>
+                {% else %}
+                    <p>Estoque: {{ produto.estoque }}</p>
+                {% endif %}
 
-            <p>Lucro bruto: R$ {{ produto.lucro_bruto | floatformat:2 |localize }} </p>
+                <p>Lucro bruto: R$ {{ produto.lucro_bruto | floatformat:2 |localize }} </p>
 
-            <p>Margem bruta: {{ produto.margem_bruta | floatformat:2 |localize }} %</p>
+                <p>Margem bruta: {{ produto.margem_bruta | floatformat:2 |localize }} %</p>
 
-            <hr>
-            
-            {% if produto.descricao %}
-                <p>Descrição: {{ produto.descricao }}</p>
-            {% endif %}
+                <hr>
+                
+                {% if produto.descricao %}
+                    <p>Descrição: {{ produto.descricao }}</p>
+                {% endif %}
 
-            {% if produto.imagem %}
-                <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
-            {% endif %}
+                {% if produto.imagem %}
+                    <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
+                {% endif %}
 
-            {% if perms.catalogo.change_produto %}
-                <a href="{% url 'editar_produto' produto.pk %}">Editar Produto</a>
-            {% endif %}
+                <div class="acoes-produtos">
+                    
+                    {% if perms.catalogo.change_produto %}
+                        <a href="{% url 'editar_produto' produto.pk %}">Editar Produto</a>
+                    {% endif %}
+                    {% if perms.catalogo.delete_produto %}
+                        <a class="excluir" href="{% url 'excluir_produto' produto.pk %}" >Excluir produto</a>
+                    {% endif %}
 
-            {% if perms.catalogo.delete_produto %}
-                <a href="{% url 'excluir_produto' produto.pk %}">Excluir produto</a>
-            {% endif %}
+                </div>
 
-        </div>
-    
+            </div>
+        
         {% endfor %}
     
     </div>
@@ -72,6 +159,45 @@
         <p>Nenhum produto encontrado </p>
     
     {% endfor %}
+
+    
+    {% if produtos.has_other_pages %}
+        <nav class="paginacao">
+
+            <a href="?{% if parametros %}{{ parametros }}&{% endif %}page=1">
+                Primeira
+            </a>
+            {% if produtos.has_previous %} 
+                <a href="?{% if parametros %}{{ parametros }}&{% endif %}page={{ produtos.previous_page_number }}">
+                    Anterior
+                </a>
+            {% endif %}
+
+            {% for numero in produtos.paginator.page_range %}
+                <a href="?{% if parametros %}{{ parametros }}&{% endif %}page={{ numero }}"
+                {% if numero == produtos.number %}class="pagina-atual"{% endif %}>
+                    {{ numero }}
+                </a>
+            {% endfor %}
+
+            <span>
+                Página {{ produtos.number }}
+                de {{ produtos.paginator.num_pages }}
+            </span>
+
+            {% if produtos.has_next %}
+                <a href="?{% if parametros %}{{ parametros }}&{% endif %}page={{ produtos.next_page_number }}">
+                    Próxima
+                </a>
+            {% endif %}
+
+            <a href="?{% if parametros %}{{ parametros }}&{% endif %}page={{ produtos.paginator.num_pages }}">
+                Última
+            </a>
+
+        </nav>
+    {% endif %}
+
 
 
 {% endblock %}

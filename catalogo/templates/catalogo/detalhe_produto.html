@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="detalhe-produto">
+    
+        <h1>Detalhes do produto</h1>
+    
+        <h2>{{ produto.nome }}</h2>
+    
+        <p>Categoria: {{ produto.categoria }}</p>
+    
+        <p>Preço: R$ {{ produto.preco|floatformat:2 }}</p>
+    
+        <p>Estoque: {{ produto.estoque }} unidades</p>
+    
+        {% if produto.imagem %}
+            <img src="{{ produto.imagem.url }}" alt="{{ produto.nome }}">
+        {% endif %}
+    
+        <h3>Descrição</h3>
+    
+        {% if produto.descricao %}
+            <p>{{ produto.descricao }}</p>
+        {% else %}
+            <p>Descrição não disponível.</p>
+        {% endif %}
+    
+        <p>
+        Disponibilidade:
+    
+        {% if produto.estoque == 0 %}
+            Produto indisponível
+        {% elif produto.estoque <= 5 %}
+            Últimas unidades!
+        {% else %}
+            Disponível
+        {% endif %}
+        </p>
+    
+        <a href="{% url 'lista_produtos' %}" class="botao-voltar">
+            Voltar para produtos
+        </a>
+</div>
+
+{% endblock %}
