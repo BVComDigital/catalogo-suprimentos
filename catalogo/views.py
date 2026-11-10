@@ -8,15 +8,10 @@ from .forms import ProdutoForm
 def home(request):
    return render(request, 'catalogo/home.html')
 
-@login_required
-@permission_required('catalogo.view_produto', raise_exception=True)
-def lista_produtos(request):
-
+def buscar_produtos(request):
    produtos = Produto.objects.order_by('categoria__nome')
 
    busca = request.GET.get('busca')
-
-   categorias = Categoria.objects.all()
 
    categoria_id = request.GET.get('categoria')
 
@@ -38,7 +33,7 @@ def lista_produtos(request):
       produtos = produtos.filter(preco__gte=preco_min)
 
    if preco_max:
-    produtos = produtos.filter(preco__lte=preco_max)
+      produtos = produtos.filter(preco__lte=preco_max)
 
     #Estoque
    if estoque_filtro == 'sem_estoque':
@@ -50,6 +45,17 @@ def lista_produtos(request):
 
    if ordenacao in ['nome', '-nome', 'preco', '-preco', 'estoque', '-estoque']:
       produtos = produtos.order_by(ordenacao)
+   
+   return produtos
+
+
+
+@login_required
+@permission_required('catalogo.view_produto', raise_exception=True)
+def lista_produtos(request):
+
+   produtos = buscar_produtos(request)
+   categorias = Categoria.objects.all()
 
    paginator = Paginator(produtos, 10)
    numero_pagina = request.GET.get('page')
@@ -64,12 +70,33 @@ def lista_produtos(request):
       {'produtos':produtos, 'categorias':categorias, 'parametros':parametros.urlencode(),}
       )
 
+
+
 @login_required
 @permission_required('catalogo.view_produto', raise_exception=True)
 def detalhe_produto(request, pk):
    produto = get_object_or_404(Produto, pk=pk)
+   produtos = list(buscar_produtos(request))
 
-   return render(request, 'catalogo/detalhe_produto.html', {'produto':produto})
+   parametros = request.GET.copy()
+   parametros.pop('page', None)
+   parametros = parametros.urlencode()
+
+   indice = next(
+      (i for i, item in enumerate(produtos) if item.pk == produto.pk), 
+      None
+   )
+   anterior = produtos[indice - 1] if indice is not None and indice > 0 else None
+
+   proximo = produtos[indice + 1] if indice is not None and indice < len(produtos) - 1 else None
+
+   return render(request, 'catalogo/detalhe_produto.html', {
+      'produto':produto,
+      'anterior': anterior,
+      'proximo': proximo,
+      'parametros': parametros,
+      })
+
 
 
 @login_required

@@ -40,6 +40,22 @@
         <a href="{% url 'lista_produtos' %}" class="botao-voltar">
             Voltar para produtos
         </a>
+
+        <div class="navegacao-produtos">
+
+            {% if anterior %}
+                <a href="{% url 'detalhe_produto' anterior.pk %}?{{ parametros }}">
+                    ← Produto anterior
+                </a>
+            {% endif %}
+
+            {% if proximo %}
+                <a href="{% url 'detalhe_produto' proximo.pk %}?{{ parametros }}">
+                    Próximo produto →
+                </a>
+            {% endif %}
+
+        </div>
 </div>
 
 {% endblock %}

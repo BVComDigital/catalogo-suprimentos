@@ -103,7 +103,7 @@
         {% for produto in grupo.list %}
 
             <div class="produto-card">
-                <h3><a href="{% url 'detalhe_produto' produto.pk %}">
+                <h3><a href="{% url 'detalhe_produto' produto.pk %}?{{ parametros }}">
                         {{ produto.nome }}
                     </a>
                 </h3>
