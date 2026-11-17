@@ -1,3 +1,9 @@
 from django.db import models
 
-# Create your models here.
+class PerfilAcesso(models.Model):
+
+   class Meta:
+
+      permissions = [
+         ('gerenciar_usuarios', 'Pode gerenciar usuários')
+      ]

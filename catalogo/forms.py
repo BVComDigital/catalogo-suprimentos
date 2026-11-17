@@ -46,16 +46,16 @@ class ProdutoForm(forms.ModelForm):
       return preco
 
 
-   def clean(self): # permite validar dois ou mais campos em conjunto
-      cleaned_data = super().clean() # executa a validação padrão do Django
+   # def clean(self): # permite validar dois ou mais campos em conjunto
+   #    cleaned_data = super().clean() # executa a validação padrão do Django
 
-      preco = cleaned_data.get('preco') # recupera os valores já convertidos e validados
-      custo = cleaned_data.get('custo')
+   #    preco = cleaned_data.get('preco') # recupera os valores já convertidos e validados
+   #    custo = cleaned_data.get('custo')
 
-      if preco is not None and custo is not None:
-         if preco < custo:
-            raise forms.ValidationError(
-               'O preço de venda não pode ser inferior ao preço de custo.'
-            )
-      return cleaned_data
+   #    if preco is not None and custo is not None:
+   #       if preco < custo:
+   #          raise forms.ValidationError(
+   #             'O preço de venda não pode ser inferior ao preço de custo.'
+   #          )
+   #    return cleaned_data
    # essa regra será aplicada ao formulário. Ela não impede, por si só, que um produto seja cadastrado por outros meios, como pelo Django Shell

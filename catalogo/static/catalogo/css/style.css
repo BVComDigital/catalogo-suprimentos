@@ -108,7 +108,7 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 320px;
+    width: 420px;
     max-width: calc(100vw - 40px);
 }
 
@@ -384,4 +384,68 @@ footer {
 
 .navegacao-produtos a:hover {
     background-color: #850d14;
+}
+
+@media (max-width: 600px) {
+
+    .detalhe-produto {
+        margin: 15px 10px;
+        padding: 15px;
+    }
+
+    .detalhe-produto h1 {
+        font-size: 22px;
+    }
+
+    .navegacao-produtos {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .navegacao-produtos a {
+        text-align: center;
+    }
+
+    .grupo-filtros {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .campo-filtro {
+        width: 100%;
+    }
+
+    .campo-filtro input,
+    .campo-filtro select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .acoes-filtros {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+    }
+
+    .acoes-filtros button,
+    .acoes-filtros a {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .acoes-produtos {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .acoes-produtos a {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
 }

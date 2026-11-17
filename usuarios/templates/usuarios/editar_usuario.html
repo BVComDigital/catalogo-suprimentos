@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>Editar usuário: {{ usuario.username }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Salvar alterações</button>
+    </form>
+
+    <a href="{% url 'lista_usuarios' %}">Voltar à lista de usuários</a>
+
+{% endblock %}

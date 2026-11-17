@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db import transaction, IntegrityError
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator
-from .models import Produto, Categoria
+from .models import Produto, Categoria, HistoricoProduto, CAMPOS_AUDITAVEIS
 from .forms import ProdutoForm
+from .services import registrar_historico_produto
+
 
 def home(request):
    return render(request, 'catalogo/home.html')
@@ -47,6 +50,7 @@ def buscar_produtos(request):
       produtos = produtos.order_by(ordenacao)
    
    return produtos
+
 
 
 
@@ -108,39 +112,95 @@ def cadastrar_produto(request): # request: representa a requisição enviada pel
       # request.POST: contém os dados dos campos. request.FILES: contém arquivos enviados, como imagens.
       if form.is_valid():
 
-         produto = form.save(commit=False) # form.save(commit=False): prepara o objeto sem gravá-lo.
+         try:
 
-         produto.cadastrado_por = request.user # produto.cadastrado_por = request.user: identifica o responsável.
+            with transaction.atomic():
 
-         produto.save()# produto.save(): grava o produto com essa informação.
-         
+               produto = form.save(commit=False) # form.save(commit=False): prepara o objeto sem gravá-lo.
+
+               produto.cadastrado_por = request.user # produto.cadastrado_por = request.user: identifica o responsável.
+
+               produto.save()# produto.save(): grava o produto com essa informação.
+
+               registrar_historico_produto(produto, request.user)
+
+         except IntegrityError:
+
+            messages.error(
+                  request,
+                  "Não foi possível cadastrar o produto. Verifique os dados informados."
+            )
+            return render(
+                  request,
+                  'catalogo/cadastrar_produto.html',
+                  {'form': form}
+            )
+            
          messages.success(request, "Produto cadastrado com sucesso!")
 
          return redirect('lista_produtos')
+         
    else:
       form = ProdutoForm() # cria um formulário vazio para exibição inicial.
 
    return render(request, 'catalogo/cadastrar_produto.html', {'form': form})
 
 
+
 @login_required
 @permission_required('catalogo.change_produto', raise_exception=True)
 def editar_produto(request, pk): 
    produto = get_object_or_404(Produto, pk=pk)
+   valores_anteriores = {
+      'nome': produto.nome,
+      'preco': produto.preco,
+      'custo': produto.custo,
+      'estoque': produto.estoque,
+      'categoria': produto.categoria.nome,
+   }
 
    if request.method == "POST": 
       form = ProdutoForm(request.POST, request.FILES, instance=produto)
       
       if form.is_valid():
-         produto = form.save(commit=False)
-         produto.alterado_por = request.user
-         produto.save()
+         try:
+
+            with transaction.atomic():
+
+               produto = form.save(commit=False)
+
+               produto.alterado_por = request.user
+
+               produto.save()
+
+               registrar_historico_produto(produto, request.user, valores_anteriores)
+
+         except IntegrityError:
+
+            produto = get_object_or_404(Produto, pk=pk)
+
+            messages.error(
+               request,
+               "Não foi possível atualizar o produto. Verifique os dados informados."
+            )
+
+            return render(
+               request,
+               'catalogo/editar_produto.html',
+               {'form': form, 'produto': produto}
+            )
+
          messages.success(request, "Produto atualizado com sucesso!")
+
          return redirect('lista_produtos')
+      
    else:
+
       form = ProdutoForm(instance=produto) 
 
    return render(request, 'catalogo/editar_produto.html', {'form': form, 'produto': produto})
+
+
 
 @login_required
 @permission_required('catalogo.delete_produto', raise_exception=True)
@@ -156,3 +216,5 @@ def excluir_produto(request, pk):
         f"Atenção! Você está prestes a excluir o produto {produto.nome}."
     )
    return render(request, 'catalogo/confirmar_exclusao.html', { 'produto': produto})
+
+
