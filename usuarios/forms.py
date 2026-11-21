@@ -1,5 +1,3 @@
-from typing import Any
-
 from django import forms 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
@@ -59,12 +57,12 @@ class EditarUsuarioForm(forms.ModelForm):
    def __init__(self, *args, **kwargs):
       super().__init__(*args, **kwargs)
 
-      if self.instance.pk:
+      if self.instance.pk: # recupera o grupo atual do usuário
          grupo = self.instance.groups.filter(
             name__in=['Gerente', 'Funcionario']
          ).first()
 
-         self.fields['ativo'].initial = self.instance.is_active
+         self.fields['ativo'].initial = self.instance.is_active # preenche os formulários com os dados do usuário
 
          if grupo:
             self.fields['grupo'].initial = grupo

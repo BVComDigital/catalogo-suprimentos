@@ -366,11 +366,12 @@ class TestePermissoesUsuarios(TestCase):
 
       self.assertEqual(resposta.status_code, 403)
 
+      
    def test_gerente_nao_pode_cadastrar_usuario_por_post(self):
       self.client.force_login(self.gerente)
 
       resposta = self.client.post('/usuarios/novo/', {
-         'username': 'gerente_tentativa',
+         'username': 'gerente_bloqueado',
          'password1': 'Teste@2026',
          'password2': 'Teste@2026',
          'grupo': self.grupo_funcionario.pk,
@@ -380,9 +381,10 @@ class TestePermissoesUsuarios(TestCase):
 
       self.assertFalse(
          Usuario.objects.filter(
-               username='gerente_tentativa'
+               username='gerente_bloqueado'
          ).exists()
       )
+
 
    def test_gerente_nao_pode_editar_usuario_por_post(self):
       self.client.force_login(self.gerente)
@@ -573,23 +575,6 @@ class TestePermissoesUsuarios(TestCase):
 
       self.assertEqual(resposta.status_code, 403)
 
-   def test_gerente_nao_pode_cadastrar_usuario_por_post(self):
-      self.client.force_login(self.gerente)
-
-      resposta = self.client.post('/usuarios/novo/', {
-         'username': 'gerente_bloqueado',
-         'password1': 'Teste@2026',
-         'password2': 'Teste@2026',
-         'grupo': self.grupo_funcionario.pk,
-      })
-
-      self.assertEqual(resposta.status_code, 403)
-
-      self.assertFalse(
-         Usuario.objects.filter(
-               username='gerente_bloqueado'
-         ).exists()
-      )
 
    def test_funcionario_nao_pode_listar_usuarios_por_post(self):
       self.client.force_login(self.usuario)

@@ -1,9 +1,6 @@
 from django import forms
 from .models import Produto
 
-class TesteProdutoForm(forms.Form):
-   nome = forms.CharField(label="nome do produto", max_length=150)
-   preco = forms.DecimalField(label="Preço", max_digits=10, decimal_places=2)
 
 class ProdutoForm(forms.ModelForm):
    class Meta:
@@ -19,21 +16,21 @@ class ProdutoForm(forms.ModelForm):
       ]
 
       widgets = {
-         "descrição": forms.Textarea(
+         "descricao": forms.Textarea(
             attrs={'rows' : 3}
          )
       }
 
       labels = {
-         'nome': 'Nome do Produtos',
+         'nome': 'Nome do Produto',
          "preco": "Preço de venda (R$)",
          "custo": "Custo de aquisição (R$)",
          "estoque": "Quantidade disponível",
       }
 
-      help_text = {
+      help_texts = {
          'preco': 'Informe o preço de venda do produto.',
-         'custo': 'Informe o quanto o produto custou para a clínica.'
+         'custo': 'Informe o custo de aquisição do produto.'
       }
 
    def clean_preco(self): #executa o método durante is_valid(), permitindo validar especificamente o campo preco. is_valid(): executa a validação do formulário.
