@@ -2,7 +2,7 @@ from .models import HistoricoProduto, CAMPOS_AUDITAVEIS
 
 
 def registrar_historico_produto(produto, usuario, valores_anteriores=None):
-   for campo, descrição in CAMPOS_AUDITAVEIS:
+   for campo, _ in CAMPOS_AUDITAVEIS:
 
       valor_atual = getattr(produto,campo)
 
