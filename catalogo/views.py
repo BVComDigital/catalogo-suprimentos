@@ -208,13 +208,24 @@ def excluir_produto(request, pk):
    produto = get_object_or_404(Produto, pk=pk)
 
    if request.method == 'POST':
-      produto.delete()
+      with transaction.atomic():
+         HistoricoProduto.objects.create(
+            produto=produto,
+            produto_nome=produto.nome,
+            usuario=request.user,
+            campo='exclusão',
+            valor_anterior=str(produto.nome), 
+            valor_novo='Produto excluído'
+            )         
+         produto.delete()
       messages.success(request, "Produto excluído com sucesso!")
+
       return redirect('lista_produtos')
+   
    messages.warning(
-        request,
-        f"Atenção! Você está prestes a excluir o produto {produto.nome}."
-    )
+      request,
+      f"Atenção! Você está prestes a excluir o produto {produto.nome}."
+   )
    return render(request, 'catalogo/confirmar_exclusao.html', { 'produto': produto})
 
 
